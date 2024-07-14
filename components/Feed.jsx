@@ -21,7 +21,6 @@ const PromptCardList = ({ data, handleTagClick }) => {
 const Feed = () => {
   const {data:session } =useSession();
   const [allPosts, setAllPosts] = useState([]);
-
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -37,7 +36,7 @@ const Feed = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [session?user.id]);
 
   const filterPrompts = (searchText) => {
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
