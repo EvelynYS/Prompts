@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import { useSession } from "next-auth/react";
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
@@ -19,6 +19,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
 };
 
 const Feed = () => {
+  const {data:session } =useSession();
   const [allPosts, setAllPosts] = useState([]);
 
   // Search states
@@ -27,7 +28,7 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
+    const response = await fetch(`/api/prompt?id=${session?.user.id}`);
     const data = await response.json();
 
     setAllPosts(data);
@@ -36,11 +37,6 @@ const Feed = () => {
 
   useEffect(() => {
     fetchPosts();
-    const interval = setInterval(() => {
-      fetchPosts();
-    }, 10000); // 每5秒请求一次数据
-
-    return () => clearInterval(interval); // 清除定时器
   }, []);
 
   const filterPrompts = (searchText) => {
