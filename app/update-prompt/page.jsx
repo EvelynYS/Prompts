@@ -1,7 +1,8 @@
 "use client";
-
+import { Suspense } from 'react';
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Loading  from './loading';
 
 import Form from "@components/Form";
 
@@ -53,13 +54,14 @@ const UpdatePrompt = () => {
   };
 
   return (
-    <Form
-      type='Edit'
-      post={post}
-      setPost={setPost}
-      submitting={submitting}
-      handleSubmit={updatePrompt}
-    />
+    <Suspense  fallback={Loading}> <Form
+    type='Edit'
+    post={post}
+    setPost={setPost}
+    submitting={submitting}
+    handleSubmit={updatePrompt}
+  /></Suspense>
+   
   );
 };
 
