@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
@@ -19,15 +19,15 @@ const PromptCardList = ({ data, handleTagClick }) => {
 };
 
 const Feed = () => {
-  const {data:session } =useSession();
   const [allPosts, setAllPosts] = useState([]);
+
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch(`/api/prompt?id=${session?.user.id}`);
+    const response = await fetch("/api/prompt");
     const data = await response.json();
 
     setAllPosts(data);
@@ -36,7 +36,7 @@ const Feed = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, [session?.user.id]);
+  }, []);
 
   const filterPrompts = (searchText) => {
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
